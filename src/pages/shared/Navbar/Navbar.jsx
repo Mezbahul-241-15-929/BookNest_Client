@@ -4,6 +4,13 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { useState } from 'react';
 import useAuth from '../../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
+import { GiBookshelf } from "react-icons/gi";
+import { BiBookAdd } from "react-icons/bi";
+import { GrUpdate } from "react-icons/gr";
+import { FaBook } from "react-icons/fa6";
+
+
+
 
 
 
@@ -51,26 +58,40 @@ const Navbar = () => {
                 <FiHome size={18} /> Home
             </NavLink>
             <NavLink
-                to='/products'
+                to='/bookshelf'
                 onClick={() => setIsMenuOpen(false)}
                 className={({ isActive }) => getLinkClass(isActive)}
             >
-                <FiShoppingCart size={18} /> Products
+                <GiBookshelf size={18} /> Bookshelf
             </NavLink>
-            <NavLink
-                to='/about'
-                onClick={() => setIsMenuOpen(false)}
-                className={({ isActive }) => getLinkClass(isActive)}
-            >
-                <FiInfo size={18} /> About
-            </NavLink>
-            <NavLink
-                to='/contact'
-                onClick={() => setIsMenuOpen(false)}
-                className={({ isActive }) => getLinkClass(isActive)}
-            >
-                <FiMail size={18} /> Contact
-            </NavLink>
+
+            {user && (
+                <>
+                    <NavLink
+                        to='/addbook'
+                        onClick={() => setIsMenuOpen(false)}
+                        className={({ isActive }) => getLinkClass(isActive)}
+                    >
+                        <BiBookAdd size={18} /> Add Book
+                    </NavLink>
+
+                    <NavLink
+                        to='/updatebook'
+                        onClick={() => setIsMenuOpen(false)}
+                        className={({ isActive }) => getLinkClass(isActive)}
+                    >
+                        <GrUpdate size={18} /> Update Book
+                    </NavLink>
+
+                    <NavLink
+                        to='/mybooks'
+                        onClick={() => setIsMenuOpen(false)}
+                        className={({ isActive }) => getLinkClass(isActive)}
+                    >
+                        <FaBook size={18} /> My Books
+                    </NavLink>
+                </>
+            )}
         </>
     );
 

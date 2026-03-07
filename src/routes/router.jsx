@@ -11,6 +11,10 @@ import Register from "../pages/Auth/Register/Register";
 import Profile from "../pages/Profile/Profile";
 import PrivateRoute from "./PrivateRoute";
 import Profile2 from "../pages/Profile/Profile2";
+import Bookshelf from "../pages/Bookshelf/Bookshelf";
+import AddBook from "../pages/Add_Book/AddBook";
+import UpdateBook from "../pages/Update_Book/UpdateBook";
+import MyBooks from "../pages/My_Books/MyBooks";
 
 export const router = createBrowserRouter([
     {
@@ -22,16 +26,20 @@ export const router = createBrowserRouter([
                 Component: Home
             },
             {
-                path: "/products",
-                Component: Products
+                path: "/bookshelf",
+                Component: Bookshelf
             },
             {
-                path: "/about",
-                Component: About
+                path: "/addbook",
+                element: <PrivateRoute><AddBook /></PrivateRoute>,
             },
             {
-                path: "/contact",
-                Component: Contact
+                path: "/updatebook",
+                element: <PrivateRoute><UpdateBook /></PrivateRoute>,
+            },
+            {
+                path: "/mybooks",
+                element: <PrivateRoute><MyBooks /></PrivateRoute>,
             },
             {
                 path: "/profile",
