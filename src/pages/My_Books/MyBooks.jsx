@@ -88,7 +88,7 @@ const MyBooks = () => {
 
                                 <div className="flex gap-2 pt-2">
                                     <Link to={`/books/${book._id}`} className="w-full">
-                                        <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
+                                        <button className="cursor-pointer w-full bg-gradient-to-r from-blue-500 to-purple-600  bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
                                             View Details
                                         </button>
                                     </Link>

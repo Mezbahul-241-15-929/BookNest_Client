@@ -107,14 +107,14 @@ const UpdateBookList = () => {
                                 <div className="flex gap-2 pt-2">
                                     <Link
                                         to={`/updatebook/${book._id}`}
-                                        className="w-1/2 bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg text-center"
+                                        className="bg-gradient-to-r from-blue-500 to-purple-600 text-white w-1/2 bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg text-center"
                                     >
                                         Edit
                                     </Link>
 
                                     <button
                                         onClick={() => handleDelete(book._id)}
-                                        className="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
+                                        className="cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 text-white w-1/2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
                                     >
                                         Delete
                                     </button>

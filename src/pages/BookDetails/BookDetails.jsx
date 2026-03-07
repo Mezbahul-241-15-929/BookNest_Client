@@ -172,7 +172,7 @@ const BookDetails = () => {
 
           <button
             onClick={handleUpvote}
-            className="mt-6 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+            className="cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600  mt-6  text-white px-5 py-2 rounded hover:bg-blue-700"
           >
             🔼 Upvote ({book.upvote || 0})
           </button>
@@ -197,7 +197,7 @@ const BookDetails = () => {
 
           <button
             type="submit"
-            className="mt-2 bg-green-600 text-white px-4 py-2 rounded"
+            className="cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 mt-2 bg-green-600 text-white px-4 py-2 rounded"
           >
             Submit Review
           </button>
@@ -234,14 +234,14 @@ const BookDetails = () => {
 
                     <button
                       onClick={() => handleUpdateReview(review._id)}
-                      className="text-green-600"
+                      className="text-green-600 cursor-pointer"
                     >
                       Save
                     </button>
 
                     <button
                       onClick={() => setEditingId(null)}
-                      className="text-gray-500"
+                      className="text-gray-500 cursor-pointer"
                     >
                       Cancel
                     </button>
@@ -262,14 +262,14 @@ const BookDetails = () => {
 
                       <button
                         onClick={() => handleEditClick(review)}
-                        className="text-blue-500"
+                        className="text-blue-500 cursor-pointer"
                       >
                         Edit
                       </button>
 
                       <button
                         onClick={() => handleDelete(review._id)}
-                        className="text-red-500"
+                        className="text-red-500 cursor-pointer"
                       >
                         Delete
                       </button>

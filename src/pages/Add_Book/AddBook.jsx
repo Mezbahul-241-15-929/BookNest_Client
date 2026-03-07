@@ -207,7 +207,7 @@ const AddBook = () => {
           <div className="md:col-span-2 text-center">
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+              className="cursor-pointer bg-gradient-to-r from-blue-500 to-purple-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
             >
               Add Book 📚
             </button>

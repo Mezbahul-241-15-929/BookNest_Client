@@ -211,7 +211,7 @@ const UpdateBook = () => {
                     <div className="md:col-span-2 text-center">
                         <button
                             type="submit"
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
+                            className="bg-gradient-to-r cursor-pointer from-blue-500 to-purple-600 bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition"
                         >
                             Update Book ✏️
                         </button>
