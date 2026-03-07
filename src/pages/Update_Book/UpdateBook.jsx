@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const UpdateBook = () => {
     const { id } = useParams();
@@ -29,7 +30,7 @@ const UpdateBook = () => {
 
                 // Check if the logged-in user is the owner
                 if (book.user_email !== user?.email) {
-                    alert("You can only edit your own book");
+                    toast.error("You can only edit your own book");
                     navigate("/");
                     return;
                 }
@@ -39,7 +40,7 @@ const UpdateBook = () => {
             })
             .catch(err => {
                 console.error(err);
-                alert("Failed to fetch book data");
+                toast.error("Failed to fetch book data");
                 navigate("/");
             });
     }, [id, user, navigate]);
@@ -60,12 +61,12 @@ const UpdateBook = () => {
             });
 
             if (res.data.modifiedCount) {
-                alert("Book updated successfully!");
+                toast.success("Book updated successfully!");
                 navigate(`/books/${id}`);
             }
         } catch (error) {
             console.error(error);
-            alert("Failed to update book");
+            toast.error("Failed to update book");
         }
     };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const BookDetails = () => {
   const { id } = useParams();
@@ -37,7 +38,8 @@ const BookDetails = () => {
   // Upvote Book
   const handleUpvote = async () => {
     if (user?.email === book?.user_email) {
-      alert("You cannot upvote your own book");
+      toast.success("You cannot upvote your own book");
+      
       return;
     }
 
@@ -63,7 +65,7 @@ const BookDetails = () => {
     e.preventDefault();
 
     if (!user) {
-      alert("Please login first");
+      toast.error("Please login first");
       return;
     }
 
@@ -93,7 +95,7 @@ const BookDetails = () => {
       setReviews([newReview, ...reviews]);
       setReviewText("");
     } else {
-      alert(data.message);
+      toast.error(data.message);
     }
   };
 

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
+import { toast } from 'react-hot-toast';
+
 
 const AddBook = () => {
   const { user } = useAuth();
@@ -39,7 +41,8 @@ const AddBook = () => {
       const res = await axios.post("http://localhost:3000/books", bookData);
 
       if (res.data.insertedId) {
-        alert("Book Added Successfully 📚");
+        toast.success("Book Added Successfully 📚");
+
         setFormData({
           book_title: "",
           cover_photo: "",
@@ -53,7 +56,7 @@ const AddBook = () => {
       }
     } catch (error) {
       console.log(error);
-      alert("Failed to add book");
+        toast.success("Book Added Successfully 📚");
     }
   };
 
