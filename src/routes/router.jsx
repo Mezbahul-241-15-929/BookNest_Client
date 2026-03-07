@@ -13,10 +13,15 @@ import PrivateRoute from "./PrivateRoute";
 import Profile2 from "../pages/Profile/Profile2";
 import Bookshelf from "../pages/Bookshelf/Bookshelf";
 import AddBook from "../pages/Add_Book/AddBook";
-import UpdateBook from "../pages/Update_Book/UpdateBook";
 import MyBooks from "../pages/My_Books/MyBooks";
+import BookDetails from "../pages/BookDetails/BookDetails";
+import UpdateBookList from "../pages/Update_Book/UpdateBookList";
+import UpdateBook from "../pages/Update_Book/UpdateBook";
+
+
 
 export const router = createBrowserRouter([
+
     {
         path: "/",
         Component: RootLayout,
@@ -30,12 +35,22 @@ export const router = createBrowserRouter([
                 Component: Bookshelf
             },
             {
+
+                path: "/books/:id",
+                element: <BookDetails />
+
+            },
+            {
                 path: "/addbook",
                 element: <PrivateRoute><AddBook /></PrivateRoute>,
             },
             {
                 path: "/updatebook",
-                element: <PrivateRoute><UpdateBook /></PrivateRoute>,
+                element: <PrivateRoute><UpdateBookList /></PrivateRoute>,
+            },
+            {
+                path: "/updatebook/:id",
+                element: <PrivateRoute><UpdateBook /></PrivateRoute>
             },
             {
                 path: "/mybooks",
@@ -45,6 +60,8 @@ export const router = createBrowserRouter([
                 path: "/profile",
                 element: <PrivateRoute><Profile></Profile></PrivateRoute>,
             }
+
+
         ]
 
     },

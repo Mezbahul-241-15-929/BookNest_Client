@@ -76,7 +76,7 @@ const Bookshelf = () => {
                 </div>
 
                 {/* View Details Button */}
-                <Link to={`/book/${book._id}`}>
+                <Link to={`/books/${book._id}`}>
                   <button className="w-full mt-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg cursor-pointer py-2 rounded-lg transition">
                     View Details
                   </button>

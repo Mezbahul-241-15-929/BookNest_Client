@@ -136,7 +136,7 @@ const Navbar = () => {
 
                                             <div className="hidden lg:flex flex-col text-left">
                                                 <span className="text-sm font-medium  leading-tight">
-                                                    {profile?.displayName || 'Welcome'}
+                                                    {user?.displayName || 'Welcome'}
                                                 </span>
                                                 <span className="text-xs  leading-tight">
                                                     {user?.email || 'User'}
@@ -223,7 +223,7 @@ const Navbar = () => {
                                     </div>
                                     <div>
                                         <div className="font-medium text-gray-800">
-                                            {profile?.displayName || 'Welcome'}
+                                            {user?.displayName || 'Welcome'}
                                         </div>
                                         {user?.email && <div className="text-sm text-gray-500">{user.email}</div>}
                                     </div>

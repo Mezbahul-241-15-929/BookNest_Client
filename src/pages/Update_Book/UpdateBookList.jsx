@@ -5,7 +5,7 @@ import { FaThumbsUp } from "react-icons/fa";
 import { Link } from "react-router";
 import useAuth from "../../hooks/useAuth";
 
-const MyBooks = () => {
+const UpdateBookList = () => {
     const { user } = useAuth();
     const [books, setBooks] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -32,6 +32,23 @@ const MyBooks = () => {
                 });
         }
     }, [user]);
+
+
+    const handleDelete = async (bookId) => {
+        if (!window.confirm("Are you sure you want to delete this book?")) return;
+
+        try {
+            const res = await axios.delete(`http://localhost:3000/books/${bookId}`);
+            if (res.data.deletedCount) {
+                // Remove from UI instantly
+                const remaining = books.filter((b) => b._id !== bookId);
+                setBooks(remaining);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Failed to delete book");
+        }
+    };
 
     if (loading) {
         return (
@@ -86,13 +103,21 @@ const MyBooks = () => {
                                     <span className="font-semibold">{book.upvote}</span>
                                 </div>
 
+
                                 <div className="flex gap-2 pt-2">
-                                    <Link to={`/books/${book._id}`} className="w-full">
-                                        <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
-                                            View Details
-                                        </button>
+                                    <Link
+                                        to={`/updatebook/${book._id}`}
+                                        className="w-1/2 bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg text-center"
+                                    >
+                                        Edit
                                     </Link>
 
+                                    <button
+                                        onClick={() => handleDelete(book._id)}
+                                        className="w-1/2 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg"
+                                    >
+                                        Delete
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -103,4 +128,4 @@ const MyBooks = () => {
     );
 };
 
-export default MyBooks;
+export default UpdateBookList;

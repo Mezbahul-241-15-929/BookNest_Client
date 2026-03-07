@@ -1,194 +1,282 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import useAuth from "../hooks/useAuth";
-import { FaThumbsUp } from "react-icons/fa";
+import useAuth from "../../hooks/useAuth";
 
 const BookDetails = () => {
-
   const { id } = useParams();
-  console.log("fasdfasdfasdfasdfsadfasdfasdfsadfsadfsadf");
-  const { user } = useAuth();
-
-  
+  const {user} = useAuth();
 
   const [book, setBook] = useState({});
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // Fetch book
+  // Fetch Book
   useEffect(() => {
-    axios.get(`http://localhost:3000/book/${id}`)
-      .then(res => setBook(res.data))
+    fetch(`http://localhost:3000/books/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBook(data);
+        setLoading(false);
+      });
   }, [id]);
 
-  // Fetch reviews
+  // Fetch Reviews
+  const loadReviews = () => {
+    fetch(`http://localhost:3000/reviews/${id}`)
+      .then((res) => res.json())
+      .then((data) => setReviews(data));
+  };
+
   useEffect(() => {
-    axios.get(`http://localhost:3000/reviews/${id}`)
-      .then(res => setReviews(res.data))
+    loadReviews();
   }, [id]);
 
-  // Upvote
+  // Upvote Book
   const handleUpvote = async () => {
-
-    if (user?.email === book.user_email) {
+    if (user?.email === book?.user_email) {
       alert("You cannot upvote your own book");
       return;
     }
 
-    const res = await axios.patch(`http://localhost:3000/books/upvote/${id}`);
+    const res = await fetch(`http://localhost:3000/upvote/${id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        user_email: user?.email,
+      }),
+    });
 
-    if (res.data.modifiedCount > 0) {
-      setBook({ ...book, upvote: book.upvote + 1 });
+    const data = await res.json();
+
+    if (data.modifiedCount) {
+      setBook({ ...book, upvote: (book.upvote || 0) + 1 });
     }
-
   };
 
-  // Add Review
-  const handleReviewSubmit = async (e) => {
+  // Submit Review
+  const handleSubmitReview = async (e) => {
     e.preventDefault();
+
+    if (!user) {
+      alert("Please login first");
+      return;
+    }
 
     const reviewData = {
       bookId: id,
       review: reviewText,
       user_email: user.email,
-      user_name: user.displayName
+      user_name: user.displayName,
     };
 
-    const res = await axios.post("http://localhost:3000/reviews", reviewData);
+    const res = await fetch("http://localhost:3000/reviews", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(reviewData),
+    });
 
-    if (res.data.insertedId) {
-      setReviews([...reviews, reviewData]);
+    const data = await res.json();
+
+    if (data.insertedId) {
+      const newReview = {
+        ...reviewData,
+        _id: data.insertedId,
+      };
+
+      setReviews([newReview, ...reviews]);
       setReviewText("");
+    } else {
+      alert(data.message);
     }
   };
 
-  // Delete review
+  // Delete Review
   const handleDelete = async (reviewId) => {
+    const res = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+      method: "DELETE",
+    });
 
-    const res = await axios.delete(`http://localhost:3000/reviews/${reviewId}`);
+    const data = await res.json();
 
-    if (res.data.deletedCount > 0) {
-      setReviews(reviews.filter(r => r._id !== reviewId));
+    if (data.deletedCount) {
+      const remaining = reviews.filter((r) => r._id !== reviewId);
+      setReviews(remaining);
     }
-
   };
 
+  // Start Editing
+  const handleEditClick = (review) => {
+    setEditingId(review._id);
+    setEditText(review.review);
+  };
 
+  // Update Review
+  const handleUpdateReview = async (reviewId) => {
+    const res = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        review: editText,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.modifiedCount) {
+      const updatedReviews = reviews.map((r) =>
+        r._id === reviewId ? { ...r, review: editText } : r
+      );
+
+      setReviews(updatedReviews);
+      setEditingId(null);
+    }
+  };
+
+  if (loading) return <h2 className="text-center mt-10">Loading...</h2>;
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
+    <div className="max-w-6xl mx-auto p-6">
 
-      <div className="max-w-6xl mx-auto bg-white rounded-xl shadow-lg p-8">
+      {/* Book Section */}
+      <div className="grid md:grid-cols-2 gap-10 mb-12">
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <img
+          src={book.cover_photo}
+          alt={book.book_title}
+          className="w-full rounded-lg shadow"
+        />
 
-          {/* Book Image */}
-          <img
-            src={book.cover_photo}
-            alt={book.book_title}
-            className="w-full rounded-lg"
-          />
+        <div>
+          <h1 className="text-3xl font-bold mb-4">{book.book_title}</h1>
 
-          {/* Book Info */}
-          <div className="space-y-3">
+          <p><b>Author:</b> {book.book_author}</p>
+          <p><b>Category:</b> {book.book_category}</p>
+          <p><b>Total Pages:</b> {book.total_page}</p>
+          <p><b>Status:</b> {book.reading_status}</p>
 
-            <h1 className="text-3xl font-bold">{book.book_title}</h1>
+          <p className="mt-4 text-gray-700">{book.book_overview}</p>
 
-            <p><strong>Author:</strong> {book.book_author}</p>
-
-            <p><strong>Total Pages:</strong> {book.total_page}</p>
-
-            <p><strong>Category:</strong> {book.book_category}</p>
-
-            <p><strong>Status:</strong> {book.reading_status}</p>
-
-            <p className="pt-2">
-              <strong>Overview:</strong> {book.book_overview}
-            </p>
-
-            <div className="pt-3">
-              <p><strong>Added By:</strong> {book.user_name}</p>
-              <p><strong>Email:</strong> {book.user_email}</p>
-            </div>
-
-            {/* Upvote */}
-            <button
-              onClick={handleUpvote}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded mt-4 hover:bg-blue-700"
-            >
-              <FaThumbsUp />
-              Upvote ({book.upvote || 0})
-            </button>
-
+          <div className="mt-4">
+            <p><b>Added by:</b> {book.user_name}</p>
+            <p>{book.user_email}</p>
           </div>
 
+          <button
+            onClick={handleUpvote}
+            className="mt-6 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+          >
+            🔼 Upvote ({book.upvote || 0})
+          </button>
         </div>
-
       </div>
 
-
       {/* Reviews Section */}
+      <div>
 
-      <div className="max-w-6xl mx-auto mt-10 bg-white p-8 rounded-xl shadow">
+        <h2 className="text-2xl font-bold mb-4">Reviews</h2>
 
-        <h2 className="text-2xl font-bold mb-6">💬 Reviews</h2>
+        {/* Add Review */}
+        <form onSubmit={handleSubmitReview} className="mb-6">
 
-        {/* Review Form */}
+          <textarea
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="Write your review..."
+            className="w-full border p-3 rounded"
+            required
+          />
 
-        {user && (
+          <button
+            type="submit"
+            className="mt-2 bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Submit Review
+          </button>
 
-          <form onSubmit={handleReviewSubmit} className="mb-6">
-
-            <textarea
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-              required
-              className="textarea textarea-bordered w-full"
-              placeholder="Write your review..."
-            />
-
-            <button className="mt-3 bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
-              Submit Review
-            </button>
-
-          </form>
-
-        )}
-
+        </form>
 
         {/* Review List */}
-
         <div className="space-y-4">
+
+          {reviews.length === 0 && (
+            <p className="text-gray-500">No reviews yet.</p>
+          )}
 
           {reviews.map((review) => (
 
-            <div key={review._id} className="border p-4 rounded">
+            <div
+              key={review._id}
+              className="border rounded p-4 shadow-sm"
+            >
 
               <p className="font-semibold">{review.user_name}</p>
 
-              <p className="text-gray-600 text-sm mb-2">{review.user_email}</p>
+              {editingId === review._id ? (
 
-              <p>{review.review}</p>
+                <div>
 
-              {/* User actions */}
+                  <textarea
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    className="w-full border p-2 rounded"
+                  />
 
-              {user?.email === review.user_email && (
+                  <div className="flex gap-3 mt-2">
 
-                <div className="flex gap-3 mt-3">
+                    <button
+                      onClick={() => handleUpdateReview(review._id)}
+                      className="text-green-600"
+                    >
+                      Save
+                    </button>
 
-                  <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded"
-                  >
-                    Edit
-                  </button>
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="text-gray-500"
+                    >
+                      Cancel
+                    </button>
 
-                  <button
-                    onClick={() => handleDelete(review._id)}
-                    className="bg-red-500 text-white px-3 py-1 rounded"
-                  >
-                    Delete
-                  </button>
+                  </div>
+
+                </div>
+
+              ) : (
+
+                <div>
+
+                  <p className="text-gray-700">{review.review}</p>
+
+                  {review.user_email === user?.email && (
+
+                    <div className="flex gap-4 mt-2">
+
+                      <button
+                        onClick={() => handleEditClick(review)}
+                        className="text-blue-500"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(review._id)}
+                        className="text-red-500"
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  )}
 
                 </div>
 
