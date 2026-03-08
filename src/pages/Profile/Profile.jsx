@@ -3,6 +3,17 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+const COLORS = ["#6366f1", "#22c55e", "#f59e0b", "#ef4444", "#8b5cf6"];
+
 const formatDate = (iso) => {
   const d = new Date(iso);
   return d.toLocaleDateString(undefined, {
@@ -22,7 +33,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
 
-  // 🔥 GET USER
+  //  GET USER PROFILE
   const { data: profile = {}, isLoading } = useQuery({
     queryKey: ["profile", user?.email],
     enabled: !!user?.email,
@@ -32,7 +43,26 @@ const Profile = () => {
     },
   });
 
-  // 🔥 Populate draft when profile changes
+  //  GET USER BOOKS
+  const { data: books = [] } = useQuery({
+    queryKey: ["my-books", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/my-books/${user.email}`);
+      return res.data;
+    },
+  });
+
+  //  BOOK CATEGORY SUMMARY FOR PIE CHART
+  const categorySummary = Object.values(
+    books.reduce((acc, book) => {
+      const category = book.book_category;
+      if (!acc[category]) acc[category] = { name: category, value: 0 };
+      acc[category].value += 1;
+      return acc;
+    }, {})
+  );
+
   useEffect(() => {
     setDraft(profile);
   }, [profile]);
@@ -48,10 +78,7 @@ const Profile = () => {
       setEditing(false);
       setMessage({ type: "success", text: "Profile updated successfully." });
 
-      // ✅ Update cache instantly
       queryClient.setQueryData(["profile", user.email], updatedProfile);
-
-      // ✅ Optional: refetch in background
       queryClient.invalidateQueries(["profile", user.email]);
     },
   });
@@ -81,7 +108,9 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
+    <div className="max-w-4xl mx-auto py-10 px-4 space-y-10">
+
+      {/* PROFILE CARD */}
       <div className="bg-white shadow-md rounded-lg overflow-hidden border">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6 p-6">
 
@@ -210,6 +239,50 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* BOOKS SUMMARY + PIE CHART */}
+      <div className="grid md:grid-cols-2 gap-6">
+
+        {/* Total Books + Book Names */}
+        <div className="bg-white p-6 rounded-lg shadow space-y-4">
+          <h2 className="text-xl font-semibold mb-2">Bookshelf Summary</h2>
+          <p className="text-3xl font-bold text-indigo-600">{books.length}</p>
+          <p className="text-gray-500">Total Books Added</p>
+
+          <div className="mt-4">
+            <h3 className="text-lg font-medium mb-2">Your Books:</h3>
+            <ul className="list-disc list-inside max-h-64 overflow-y-auto space-y-1 text-gray-700">
+              {books.map((book) => (
+                <li key={book._id}>{book.book_title}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Pie Chart */}
+        <div className="bg-white p-6 rounded-lg shadow">
+          <h2 className="text-xl font-semibold mb-4">Books by Category</h2>
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={categorySummary}
+                dataKey="value"
+                nameKey="name"
+                outerRadius={80}
+                label
+              >
+                {categorySummary.map((entry, index) => (
+                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+      </div>
+
     </div>
   );
 };

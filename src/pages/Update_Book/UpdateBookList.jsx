@@ -5,6 +5,7 @@ import { FaThumbsUp } from "react-icons/fa";
 import { Link } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const UpdateBookList = () => {
     const { user } = useAuth();
@@ -35,25 +36,38 @@ const UpdateBookList = () => {
     }, [user]);
 
 
-const handleDelete = async (bookId) => {
-  try {
-    const res = await axios.delete(`http://localhost:3000/books/${bookId}`);
+    const handleDelete = async (bookId) => {
+        // Show SweetAlert2 confirmation
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+        });
 
-    if (res.data.deletedCount) {
-      // Remove the deleted book from UI instantly
-      const remaining = books.filter((b) => b._id !== bookId);
-      setBooks(remaining);
+        if (result.isConfirmed) {
+            try {
+                const res = await axios.delete(`http://localhost:3000/books/${bookId}`);
 
-      // Show success toast
-      toast.success("Book deleted successfully 📚");
-    } else {
-      toast.error("Failed to delete book");
-    }
-  } catch (err) {
-    console.error(err);
-    toast.error("Failed to delete book");
-  }
-};
+                if (res.data.deletedCount) {
+                    // Remove the deleted book from UI instantly
+                    const remaining = books.filter((b) => b._id !== bookId);
+                    setBooks(remaining);
+
+                    // Show success toast
+                    toast.success("Book deleted successfully 📚");
+                } else {
+                    toast.error("Failed to delete book");
+                }
+            } catch (err) {
+                console.error(err);
+                toast.error("Failed to delete book");
+            }
+        }
+    };
 
     if (loading) {
         return (
