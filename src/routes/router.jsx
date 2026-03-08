@@ -17,6 +17,7 @@ import MyBooks from "../pages/My_Books/MyBooks";
 import BookDetails from "../pages/BookDetails/BookDetails";
 import UpdateBookList from "../pages/Update_Book/UpdateBookList";
 import UpdateBook from "../pages/Update_Book/UpdateBook";
+import Error404Page from "../components/Error404Page";
 
 
 
@@ -59,7 +60,11 @@ export const router = createBrowserRouter([
             {
                 path: "/profile",
                 element: <PrivateRoute><Profile></Profile></PrivateRoute>,
-            }
+            },
+            {
+                path: "*",
+                Component: Error404Page
+            },
 
 
         ]
