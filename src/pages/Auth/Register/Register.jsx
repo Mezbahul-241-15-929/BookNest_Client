@@ -69,8 +69,8 @@ const Register = () => {
     }
 
     return (
-        <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl">
-            <h3 className="text-3xl text-center">Welcome to Zap Shift</h3>
+        <div className="card bg-base-100 w-full mx-auto max-w-sm shrink-0 shadow-2xl my-5">
+            <h3 className="text-3xl text-center">Welcome to BookNest</h3>
             <p className='text-center'>Please Register</p>
             <form className="card-body" onSubmit={handleSubmit(handleRegistration)}>
                 <fieldset className="fieldset">
@@ -99,7 +99,7 @@ const Register = () => {
                     <input type="password" {...register('password', {
                         required: true,
                         minLength: 6,
-                        // pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/
+                        pattern: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+$/
                     })} className="input" placeholder="Password" />
                     {
                         errors.password?.type === 'required' && <p className='text-red-500'>Password is required.</p>

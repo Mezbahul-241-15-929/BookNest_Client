@@ -154,11 +154,6 @@ const Navbar = () => {
                                                 </NavLink>
                                             </li>
                                             <li>
-                                                <NavLink to="/settings" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50">
-                                                    <FiSettings /> Settings
-                                                </NavLink>
-                                            </li>
-                                            <li>
                                                 <button
                                                     onClick={handleSignOut}
                                                     className="w-full text-left flex items-center gap-2 px-3 py-2 rounded hover:bg-gray-50 text-red-600"

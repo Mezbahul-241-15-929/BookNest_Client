@@ -14,7 +14,7 @@ const MyBooks = () => {
     useEffect(() => {
         if (user?.email) {
             axios
-                .get(`http://localhost:3000/mybooks?email=${user.email}`)
+                .get(`https://book-nest-server-seven.vercel.app/mybooks?email=${user.email}`)
                 .then((res) => {
                     setBooks(res.data);
                     setLoading(false);

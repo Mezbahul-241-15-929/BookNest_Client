@@ -16,7 +16,7 @@ const BookDetails = () => {
 
   // Fetch Book
   useEffect(() => {
-    fetch(`http://localhost:3000/books/${id}`)
+    fetch(`https://book-nest-server-seven.vercel.app/books/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setBook(data);
@@ -26,7 +26,7 @@ const BookDetails = () => {
 
   // Fetch Reviews
   const loadReviews = () => {
-    fetch(`http://localhost:3000/reviews/${id}`)
+    fetch(`https://book-nest-server-seven.vercel.app/reviews/${id}`)
       .then((res) => res.json())
       .then((data) => setReviews(data));
   };
@@ -43,7 +43,7 @@ const BookDetails = () => {
       return;
     }
 
-    const res = await fetch(`http://localhost:3000/upvote/${id}`, {
+    const res = await fetch(`https://book-nest-server-seven.vercel.app/upvote/${id}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",
@@ -76,7 +76,7 @@ const BookDetails = () => {
       user_name: user.displayName,
     };
 
-    const res = await fetch("http://localhost:3000/reviews", {
+    const res = await fetch("https://book-nest-server-seven.vercel.app/reviews", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -101,7 +101,7 @@ const BookDetails = () => {
 
   // Delete Review
   const handleDelete = async (reviewId) => {
-    const res = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+    const res = await fetch(`https://book-nest-server-seven.vercel.app/reviews/${reviewId}`, {
       method: "DELETE",
     });
 
@@ -121,7 +121,7 @@ const BookDetails = () => {
 
   // Update Review
   const handleUpdateReview = async (reviewId) => {
-    const res = await fetch(`http://localhost:3000/reviews/${reviewId}`, {
+    const res = await fetch(`https://book-nest-server-seven.vercel.app/reviews/${reviewId}`, {
       method: "PATCH",
       headers: {
         "content-type": "application/json",

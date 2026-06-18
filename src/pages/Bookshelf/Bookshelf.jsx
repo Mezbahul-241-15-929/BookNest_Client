@@ -11,7 +11,7 @@ const Bookshelf = () => {
   useEffect(() => {
 
     axios
-      .get("http://localhost:3000/books")
+      .get("https://book-nest-server-seven.vercel.app/books")
       .then((res) => {
         setBooks(res.data);
         setLoading(false);

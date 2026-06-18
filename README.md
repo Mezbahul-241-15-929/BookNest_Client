@@ -1,16 +1,84 @@
-# React + Vite
+# 📚 BookNest - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+BookNest is a modern, responsive book management platform where users can discover books, add their own collections, track reading activities, and manage personal libraries. The application provides a clean and user-friendly interface with secure authentication and real-time interactions.
 
-Currently, two official plugins are available:
+Fully Responsive for Mobile, Tablet & Desktop
+🌐 Live Site: https://booknest-be304.web.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 📖 Project Description
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+BookNest helps readers organize and explore books efficiently. Users can create accounts, browse popular books, view detailed information, add books to the database, and manage their personal collection.
 
-## Expanding the ESLint configuration
+The project focuses on responsive UI design, secure authentication, seamless user experience, and modern React development practices.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## ✨ Features
+
+### 🔐 Authentication System
+- User Registration & Login
+- Firebase Authentication
+- Google Sign-In
+- Protected Routes
+- Persistent User Sessions
+
+### 📚 Book Management
+- Browse all books
+- View book details
+- Add new books
+- Update existing books
+- Delete books (authorized users)
+- Category-based book organization
+
+### 👤 User Dashboard
+- View personal added books
+- Manage book collection
+- Track reading activities
+
+### 🎨 Modern UI
+- Responsive design for Mobile, Tablet, and Desktop
+- Hero Banner Section
+- Popular Books Showcase
+- Featured Categories Section
+- Community Statistics
+- Reader Testimonials
+- Smooth Navigation Experience
+
+### ⚡ Performance
+- Fast React SPA experience
+- Dynamic data fetching
+- Optimized component structure
+
+---
+
+## 🛠️ Technologies Used
+
+### Frontend
+- React.js
+- React Router DOM
+- Tailwind CSS
+- DaisyUI
+
+### Authentication
+- Firebase Authentication
+
+### API Communication
+- Axios
+- Fetch API
+
+### Deployment
+- Firebase Hosting
+
+---
+
+
+
+
+## 👨‍💻 Created By
+
+**Md. Mezbahul Islam**
+
+---
+© 2026 BookNest. All Rights Reserved.

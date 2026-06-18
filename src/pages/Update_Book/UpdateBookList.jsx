@@ -16,7 +16,7 @@ const UpdateBookList = () => {
     useEffect(() => {
         if (user?.email) {
             axios
-                .get(`http://localhost:3000/mybooks?email=${user.email}`)
+                .get(`https://book-nest-server-seven.vercel.app/mybooks?email=${user.email}`)
                 .then((res) => {
                     setBooks(res.data);
                     setLoading(false);
@@ -50,7 +50,7 @@ const UpdateBookList = () => {
 
         if (result.isConfirmed) {
             try {
-                const res = await axios.delete(`http://localhost:3000/books/${bookId}`);
+                const res = await axios.delete(`https://book-nest-server-seven.vercel.app/books/${bookId}`);
 
                 if (res.data.deletedCount) {
                     // Remove the deleted book from UI instantly

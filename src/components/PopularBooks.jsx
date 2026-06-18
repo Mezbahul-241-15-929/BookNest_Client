@@ -13,7 +13,7 @@ const PopularBooks = () => {
     useEffect(() => {
 
         axios
-            .get("http://localhost:3000/popular-books")
+            .get("https://book-nest-server-seven.vercel.app/popular-books")
             .then((res) => {
                 setBooks(res.data);
                 setLoading(false);

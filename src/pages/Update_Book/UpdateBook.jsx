@@ -24,7 +24,7 @@ const UpdateBook = () => {
 
     // Load existing book data
     useEffect(() => {
-        axios.get(`http://localhost:3000/books/${id}`)
+        axios.get(`https://book-nest-server-seven.vercel.app/books/${id}`)
             .then(res => {
                 const book = res.data;
 
@@ -54,7 +54,7 @@ const UpdateBook = () => {
         e.preventDefault();
 
         try {
-            const res = await axios.put(`http://localhost:3000/books/${id}`, {
+            const res = await axios.put(`https://book-nest-server-seven.vercel.app/books/${id}`, {
                 ...formData,
                 user_email: user?.email,
                 user_name: user?.displayName,
