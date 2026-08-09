@@ -3,6 +3,11 @@
 BookNest is a modern, responsive book management platform where users can discover books, add their own collections, track reading activities, and manage personal libraries. The application provides a clean and user-friendly interface with secure authentication and real-time interactions.
 
 Fully Responsive for Mobile, Tablet & Desktop
+
+Client site: https://github.com/Mezbahul-241-15-929/BookNest_Client
+
+Server site: https://github.com/Mezbahul-241-15-929/BookNest_Server
+
 🌐 Live Site: https://booknest-be304.web.app/
 
 ---
